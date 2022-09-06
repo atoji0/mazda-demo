@@ -1,0 +1,5 @@
+POST http://localhost:5173/api/asAdjustment/searchCondition
+###
+
+###
+POST http://localhost:5173/api/asAdjustment/searchList
