@@ -4,6 +4,8 @@ export default {
     ASAdjustment: "AS調整",
     ASAdjustmentRequest: "AS調整要求",
     ASAdjustmentSpecialRequest: "AS調整特別要求",
+    Operation: "管理",
+    UserOperation: "ユーザ管理",
   },
   message: {
     info: {

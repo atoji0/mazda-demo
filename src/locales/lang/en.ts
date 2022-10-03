@@ -4,6 +4,8 @@ export default {
     ASAdjustment: "AS Adjustment",
     ASAdjustmentRequest: "AS Adjustment Request",
     ASAdjustmentSpecialRequest: "AS Adjustment Special Request",
+    Operation: "Operetion",
+    UserOperation: "User Operation",
   },
   message: {
     info: {

@@ -1,4 +1,6 @@
 {
+  "loginAdmin": { "role": "admin" },
+  "loginUser": { "role": "user" },
   "asAdjustmentSearchCondition": {
     "globalPlantCodeList": ["MC"],
     "vehicleProductionPlantCodeList": ["HM", "YM"],

@@ -7,9 +7,9 @@ import { message } from "ant-design-vue";
 import * as ExcelJS from "exceljs";
 import saveAs from "file-saver";
 
-import AsAdjustmentSearchCondition from "../models/AsAdjustmentSearchCondition";
-import AsAdjustmentSearchList from "../models/AsAdjustmentSearchCondition";
-import ASAdjustmentResultTableLayout from "../views/layout/ASAdjustmentResultTableLayout";
+import AsAdjustmentSearchCondition from "@/models/AsAdjustmentSearchCondition";
+import AsAdjustmentSearchList from "@/models/AsAdjustmentSearchCondition";
+import ASAdjustmentResultTableLayout from "@/views/layout/ASAdjustmentResultTableLayout";
 
 class SearchUICondition {
   sonList: string = "";
@@ -57,12 +57,18 @@ class AsAdjustmentService {
     return this._excludedLineOffDateFromTo;
   }
 
+  /**
+   * プルダウンを初期化する。
+   */
   public initCondition(): void {
     axios.post<AsAdjustmentSearchCondition>(this.URL + "searchCondition").then((res) => {
       this._searchOption.value = res.data;
     });
   }
 
+  /**
+   * AS調整を行う。
+   */
   public executeAdjustment(): void {
     this._searchUICondition.value.assemblyScheduleAdjustmentUploadDateTimeFrom = dayjs();
     axios.post<AsAdjustmentSearchList[]>(this.URL + "searchList").then((res) => {
@@ -70,20 +76,23 @@ class AsAdjustmentService {
     });
   }
 
+  /**
+   * 検索結果を表示する。
+   */
   public searchResults(): void {
     let errorMessages: string[] = [];
 
     // エラーチェック
-    if (this.checkLength(this._searchUICondition.value.aicList, 10)) {
+    if (this.checkMultiTextLength(this._searchUICondition.value.aicList, 10)) {
       errorMessages.push(i18n.global.t("message.error.length", { columnName: "AIC(From)", length: 10 }));
     }
-    if (this.checkLength(this._searchUICondition.value.sonList, 10)) {
+    if (this.checkMultiTextLength(this._searchUICondition.value.sonList, 10)) {
       errorMessages.push(i18n.global.t("message.error.length", { columnName: "SON(From)", length: 10 }));
     }
-    if (this.checkLength(this._searchUICondition.value.transferDestinationSonList, 10)) {
+    if (this.checkMultiTextLength(this._searchUICondition.value.transferDestinationSonList, 10)) {
       errorMessages.push(i18n.global.t("message.error.length", { columnName: "AIC(To)", length: 10 }));
     }
-    if (this.checkLength(this._searchUICondition.value.transferDestinationAicList, 10)) {
+    if (this.checkMultiTextLength(this._searchUICondition.value.transferDestinationAicList, 10)) {
       errorMessages.push(i18n.global.t("message.error.length", { columnName: "SON(To)", length: 10 }));
     }
     if (errorMessages.length == 0) {
@@ -97,18 +106,29 @@ class AsAdjustmentService {
     }
   }
 
+  /**
+   * 検索結果をクリアする。
+   */
   public clearResults(): void {
     this._searchCondition.value = new AsAdjustmentSearchCondition();
     this._searchUICondition.value = new SearchUICondition();
     this._results.value = [];
   }
 
+  /**
+   * AS調整対象のSONリストをクリアする。
+   */
   public clearSons(): void {
     this._targetSons.value = [];
     this._excludedLineOffDateFromTo.value = [null, null];
   }
 
-  public uploadSon(file: File): Boolean {
+  /**
+   * SONリストファイルをアップロードし、取り込む。
+   *
+   * @param file Excelファイル
+   */
+  public uploadSon(file: File) {
     const reader = new FileReader();
     reader.readAsArrayBuffer(file);
     reader.onload = () => {
@@ -128,15 +148,20 @@ class AsAdjustmentService {
         });
       }
     };
-    return false;
   }
 
+  /**
+   * Excelテンプレートをダウンロードする。
+   */
   public downloadExcel(): void {
     axios.get("src/assets/asAdjustment.xlsx", { responseType: "blob" }).then((response) => {
       saveAs(new Blob([response.data], { type: "application/octet-stream" }), "test.xlsx");
     });
   }
 
+  /**
+   * 検索結果をExcelでダウンロードする。
+   */
   public downloadResult(): void {
     var headerList: string[] = [];
     ASAdjustmentResultTableLayout.forEach((data) => {
@@ -157,7 +182,13 @@ class AsAdjustmentService {
     });
   }
 
-  private checkLength(checkStr: string, len: number): boolean {
+  /**
+   * 複数テキストの長さチェックを行う。
+   * @param checkStr 文字列
+   * @param len 文字列長
+   * @returns true:問題なし、false:エラー
+   */
+  private checkMultiTextLength(checkStr: string, len: number): boolean {
     if (checkStr.length > 0) {
       let strList: string[] = checkStr.split("\n");
       for (let str of strList) {

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import SearchSelect from "../components/SearchSelect.vue";
-import SearchTextArea from "../components/SearchTextArea.vue";
-import SearchDateRange from "../components/SearchDateRange.vue";
-import SearchDateTime from "../components/SearchDateTime.vue";
+import SearchSelect from "@/components/SearchSelect.vue";
+import SearchTextArea from "@/components/SearchTextArea.vue";
+import SearchDateRange from "@/components/SearchDateRange.vue";
+import SearchDateTime from "@/components/SearchDateTime.vue";
 import ASAdjustmentResultTableLayout from "./layout/ASAdjustmentResultTableLayout";
-import service from "../services/AsAdjustmentService";
+import service from "@/services/AsAdjustmentService";
 
 const searchOption = service.searchOption;
 const searchUICondition = service.searchUICondition;
