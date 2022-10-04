@@ -87,7 +87,7 @@ router.beforeEach((to, from, next) => {
   if (to.name != "Login" && commonStore.userID == "") {
     // ログインIDが存在しない場合、ログイン画面へ遷移する。
     next("Login");
-  } else if (to.name == "Home" && from.name == "Login" && commonStore.role == Role.None) {
+  } else if (to.name == "Home" && commonStore.role == Role.None) {
     // 認可されてない場合、403エラーを表示する。
     next("NotAuth");
   } else {
