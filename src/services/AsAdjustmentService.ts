@@ -155,7 +155,7 @@ class AsAdjustmentService {
    */
   public downloadExcel(): void {
     axios.get("src/assets/asAdjustment.xlsx", { responseType: "blob" }).then((response) => {
-      saveAs(new Blob([response.data], { type: "application/octet-stream" }), "test.xlsx");
+      saveAs(new Blob([response.data], { type: "application/octet-stream" }), "ASAdjustment_SONList.xlsx");
     });
   }
 
@@ -178,7 +178,7 @@ class AsAdjustmentService {
     const ws = workbook.addWorksheet("Data");
     ws.addRows(rows);
     workbook.xlsx.writeBuffer().then((buffer) => {
-      saveAs(new Blob([buffer], { type: "application/octet-stream" }), "test.xlsx");
+      saveAs(new Blob([buffer], { type: "application/octet-stream" }), "ASAdjustment_ResultHistory.xlsx");
     });
   }
 
